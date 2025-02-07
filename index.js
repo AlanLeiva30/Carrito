@@ -1,13 +1,10 @@
 const btnCart = document.querySelector('.container-cart-icon');
-const containerCartProducts = document.querySelector(
-	'.container-cart-products'
-);
+const containerCartProducts = document.querySelector('.container-cart-products');
 
 btnCart.addEventListener('click', () => {
 	containerCartProducts.classList.toggle('hidden-cart');
 });
 
-const cartInfo = document.querySelector('.cart-product');
 const rowProduct = document.querySelector('.row-product');
 const productsList = document.querySelector('.container-items');
 let allProducts = [];
@@ -17,6 +14,7 @@ const countProducts = document.querySelector('#contador-productos');
 const cartEmpty = document.querySelector('.cart-empty');
 const cartTotal = document.querySelector('.cart-total');
 const btnPay = document.getElementById('btn-pay');
+const btnEmptyCart = document.getElementById('btn-empty-cart');
 
 // Añadir productos al carrito
 productsList.addEventListener('click', e => {
@@ -48,33 +46,41 @@ productsList.addEventListener('click', e => {
 	}
 });
 
-// Eliminar productos del carrito
-rowProduct.addEventListener('click', e => {
-	if (e.target.classList.contains('icon-close')) {
-		const product = e.target.parentElement;
-		const title = product.querySelector('.titulo-producto-carrito')
-			.textContent;
-
-		allProducts = allProducts.filter(
-			product => product.title !== title
-		);
-
-		showHTML();
+// Vaciar carrito
+btnEmptyCart.addEventListener('click', () => {
+	if (allProducts.length > 0) {
+		swal({
+			title: "¿Estás seguro?",
+			text: "Esto eliminará todos los productos del carrito.",
+			icon: "warning",
+			buttons: ["Cancelar", "Vaciar carrito"],
+			dangerMode: true,
+		}).then((willDelete) => {
+			if (willDelete) {
+				allProducts = [];
+				showHTML();
+				swal("Carrito vaciado", "Todos los productos han sido eliminados.", "success");
+			}
+		});
+	} else {
+		swal("El carrito está vacío", "No hay productos para eliminar.", "info");
 	}
 });
 
-// Mostrar carrito y total
+// Mostrar el carrito actualizado
 const showHTML = () => {
 	if (!allProducts.length) {
 		cartEmpty.classList.remove('hidden');
 		rowProduct.classList.add('hidden');
 		cartTotal.classList.add('hidden');
 		btnPay.classList.add('hidden');
+		btnEmptyCart.classList.add('hidden');
 	} else {
 		cartEmpty.classList.add('hidden');
 		rowProduct.classList.remove('hidden');
 		cartTotal.classList.remove('hidden');
 		btnPay.classList.remove('hidden');
+		btnEmptyCart.classList.remove('hidden');
 	}
 
 	rowProduct.innerHTML = '';
@@ -118,7 +124,20 @@ const showHTML = () => {
 	countProducts.innerText = totalOfProducts;
 };
 
-// Generar PDF al pagar
+// Función para pagar y generar PDF
+btnPay.addEventListener('click', () => {
+	if (allProducts.length > 0) {
+		swal("¡Pago realizado!", "Generando factura en PDF...", "success").then(() => {
+			generatePDF();
+			allProducts = [];
+			showHTML();
+		});
+	} else {
+		swal("El carrito está vacío", "No hay productos para pagar.", "info");
+	}
+});
+
+// Generar PDF
 const generatePDF = () => {
 	const { jsPDF } = window.jspdf;
 	const doc = new jsPDF();
@@ -143,15 +162,3 @@ const generatePDF = () => {
 
 	doc.save('factura-compra.pdf');
 };
-
-// Evento para el botón de pagar
-btnPay.addEventListener('click', () => {
-	if (allProducts.length > 0) {
-		alert('¡Gracias por tu compra! Generando factura...');
-		generatePDF();
-
-		// Vaciar el carrito después de pagar
-		allProducts = [];
-		showHTML();
-	}
-});

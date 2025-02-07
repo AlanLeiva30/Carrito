@@ -200,3 +200,72 @@ header{
 .hidden{
     display: none;
 }
+.cart-total {
+    display: flex;
+    flex-direction: column; /* Alinear elementos en columna */
+    justify-content: center; /* Centrar verticalmente */
+    align-items: center; /* Centrar horizontalmente */
+    padding: 20px 0;
+    gap: 20px;
+}
+
+#btn-pay {
+    background-color: #28a745; /* Verde brillante */
+    color: #fff; /* Texto blanco */
+    border: none;
+    border-radius: 8px; /* Bordes redondeados */
+    padding: 10px 20px; /* Espaciado interno */
+    font-size: 16px; /* Tamaño del texto */
+    font-weight: bold; /* Texto en negrita */
+    cursor: pointer; /* Cambiar el cursor al pasar */
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    text-align: center;
+}
+
+#btn-pay:hover {
+    background-color: #218838; /* Verde más oscuro al pasar el ratón */
+    transform: scale(1.1); /* Efecto de agrandamiento */
+}
+
+#btn-pay:active {
+    transform: scale(1.05); /* Reducir ligeramente al hacer clic */
+}
+.cart-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Espaciado entre los botones */
+    margin-top: 10px;
+}
+
+#btn-pay,
+#btn-empty-cart {
+    background-color: #28a745; /* Verde brillante */
+    color: #fff; /* Texto blanco */
+    border: none;
+    border-radius: 8px; /* Bordes redondeados */
+    padding: 10px 20px; /* Espaciado interno */
+    font-size: 16px; /* Tamaño del texto */
+    font-weight: bold; /* Texto en negrita */
+    cursor: pointer; /* Cambiar el cursor al pasar */
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#btn-empty-cart {
+    background-color: #dc3545; /* Rojo brillante para distinguirlo */
+}
+
+#btn-pay:hover {
+    background-color: #218838; /* Verde más oscuro al pasar el ratón */
+    transform: scale(1.1); /* Efecto de agrandamiento */
+}
+
+#btn-empty-cart:hover {
+    background-color: #c82333; /* Rojo más oscuro al pasar el ratón */
+    transform: scale(1.1); /* Efecto de agrandamiento */
+}
+
+#btn-pay:active,
+#btn-empty-cart:active {
+    transform: scale(1.05); /* Reducir ligeramente al hacer clic */
+}
+
