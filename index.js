@@ -22,6 +22,7 @@ productsList.addEventListener('click', e => {
 		const product = e.target.parentElement;
 
 		const infoProduct = {
+			id: allProducts.length + 1,
 			quantity: 1,
 			title: product.querySelector('h2').textContent,
 			price: product.querySelector('p').textContent,
@@ -44,7 +45,25 @@ productsList.addEventListener('click', e => {
 
 		showHTML();
 	}
+	console.log(allProducts);
 });
+
+//Eliminar un producto del carrito
+function eliminarItem(itemId) {
+	swal({
+		title: "¿Estás seguro?",
+		text: "Esto eliminará el producto del carrito.",
+		icon: "warning",
+		buttons: ["Cancelar", "Eliminar"],
+		dangerMode: true,
+	}).then((willDelete) => {
+		if (willDelete) {
+			allProducts = allProducts.filter(product => product.id !== itemId);
+			showHTML();
+			swal("Producto eliminado", "El producto ha sido eliminado del carrito.", "success");
+		}
+	});
+}
 
 // Vaciar carrito
 btnEmptyCart.addEventListener('click', () => {
@@ -99,19 +118,20 @@ const showHTML = () => {
                 <span class="precio-producto-carrito">${product.price}</span>
             </div>
             <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="icon-close"
-            >
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                />
-            </svg>
+				xmlns="http://www.w3.org/2000/svg"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke-width="1.5"
+				stroke="currentColor"
+				class="icon-close"
+				onclick="eliminarItem(${product.id})"
+			>
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					d="M6 18L18 6M6 6l12 12"
+				/>
+			</svg>
         `;
 
 		rowProduct.append(containerProduct);
