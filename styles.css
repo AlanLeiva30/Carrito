@@ -235,6 +235,7 @@ header{
     justify-content: center;
     gap: 20px; /* Espaciado entre los botones */
     margin-top: 10px;
+    margin-bottom: 20px;
 }
 
 #btn-pay,

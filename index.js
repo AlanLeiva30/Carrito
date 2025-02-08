@@ -1,5 +1,31 @@
 const btnCart = document.querySelector('.container-cart-icon');
 const containerCartProducts = document.querySelector('.container-cart-products');
+const container_items = document.querySelector('.container-items');
+
+//llama al archivo data.json y renderiza los productos en el DOM
+fetch('data.json')
+	.then(response => response.json())
+	.then(data => {
+		console.log(data);
+		data.forEach(product => {
+			const item = document.createElement('div');
+			item.classList.add('item');
+
+			item.innerHTML = `
+				<figure>
+					<img src="${product.image}" alt="${product.name}" />
+				</figure>
+				<div class="info-product">
+					<h2>${product.name}</h2>
+					<p class="price">$${product.price}</p>
+					<p class="quantity">Cantidad disponible: <span class="available-quantity">${product.quantity}</span></p>
+					<button class="btn-add-cart">Añadir al carrito</button>
+				</div>
+			`;
+
+			container_items.appendChild(item);
+		});
+	});
 
 btnCart.addEventListener('click', () => {
 	containerCartProducts.classList.toggle('hidden-cart');
@@ -20,30 +46,39 @@ const btnEmptyCart = document.getElementById('btn-empty-cart');
 productsList.addEventListener('click', e => {
 	if (e.target.classList.contains('btn-add-cart')) {
 		const product = e.target.parentElement;
+		const availableQuantityElement = product.querySelector('.available-quantity');
+		const availableQuantity = parseInt(availableQuantityElement.textContent);
 
-		const infoProduct = {
-			id: allProducts.length + 1,
-			quantity: 1,
-			title: product.querySelector('h2').textContent,
-			price: product.querySelector('p').textContent,
-		};
+		if (availableQuantity > 0) {
+			const infoProduct = {
+				id: allProducts.length + 1,
+				quantity: 1,
+				title: product.querySelector('h2').textContent,
+				price: product.querySelector('p.price').textContent,
+				availableQuantity: availableQuantity - 1
+			};
 
-		const exists = allProducts.some(
-			product => product.title === infoProduct.title
-		);
+			const exists = allProducts.some(
+				product => product.title === infoProduct.title
+			);
 
-		if (exists) {
-			allProducts = allProducts.map(product => {
-				if (product.title === infoProduct.title) {
-					product.quantity++;
-				}
-				return product;
-			});
+			if (exists) {
+				allProducts = allProducts.map(product => {
+					if (product.title === infoProduct.title && product.availableQuantity > 0) {
+						product.quantity++;
+						product.availableQuantity--;
+					}
+					return product;
+				});
+			} else {
+				allProducts = [...allProducts, infoProduct];
+			}
+
+			availableQuantityElement.textContent = availableQuantity - 1;
+			showHTML();
 		} else {
-			allProducts = [...allProducts, infoProduct];
+			swal("Cantidad insuficiente", "No hay suficientes productos disponibles.", "error");
 		}
-
-		showHTML();
 	}
 	console.log(allProducts);
 });
@@ -58,6 +93,11 @@ function eliminarItem(itemId) {
 		dangerMode: true,
 	}).then((willDelete) => {
 		if (willDelete) {
+			const productToRemove = allProducts.find(product => product.id === itemId);
+			const productElement = [...document.querySelectorAll('.item')].find(item => item.querySelector('h2').textContent === productToRemove.title);
+			const availableQuantityElement = productElement.querySelector('.available-quantity');
+			availableQuantityElement.textContent = parseInt(availableQuantityElement.textContent) + productToRemove.quantity;
+
 			allProducts = allProducts.filter(product => product.id !== itemId);
 			showHTML();
 			swal("Producto eliminado", "El producto ha sido eliminado del carrito.", "success");
@@ -76,6 +116,11 @@ btnEmptyCart.addEventListener('click', () => {
 			dangerMode: true,
 		}).then((willDelete) => {
 			if (willDelete) {
+				allProducts.forEach(product => {
+					const productElement = [...document.querySelectorAll('.item')].find(item => item.querySelector('h2').textContent === product.title);
+					const availableQuantityElement = productElement.querySelector('.available-quantity');
+					availableQuantityElement.textContent = parseInt(availableQuantityElement.textContent) + product.quantity;
+				});
 				allProducts = [];
 				showHTML();
 				swal("Carrito vaciado", "Todos los productos han sido eliminados.", "success");
@@ -88,14 +133,26 @@ btnEmptyCart.addEventListener('click', () => {
 
 // Aumentar cantidad de productos
 function increaseQuantity(itemId) {
+	let productFound = false;
 	allProducts = allProducts.map(product => {
 		if (product.id === itemId) {
-			product.quantity++;
+			productFound = true;
+			if (product.availableQuantity > 0) {
+				product.quantity++;
+				product.availableQuantity--;
+				const productElement = [...document.querySelectorAll('.item')].find(item => item.querySelector('h2').textContent === product.title);
+				const availableQuantityElement = productElement.querySelector('.available-quantity');
+				availableQuantityElement.textContent = parseInt(availableQuantityElement.textContent) - 1;
+			} else {
+				swal("Cantidad insuficiente", "No hay más productos disponibles para agregar.", "error");
+			}
 		}
 		return product;
 	});
 
-	showHTML();
+	if (productFound) {
+		showHTML();
+	}
 }
 
 // Disminuir cantidad de productos
@@ -103,6 +160,10 @@ function decreaseQuantity(itemId) {
 	allProducts = allProducts.map(product => {
 		if (product.id === itemId && product.quantity > 1) {
 			product.quantity--;
+			product.availableQuantity++;
+			const productElement = [...document.querySelectorAll('.item')].find(item => item.querySelector('h2').textContent === product.title);
+			const availableQuantityElement = productElement.querySelector('.available-quantity');
+			availableQuantityElement.textContent = parseInt(availableQuantityElement.textContent) + 1;
 		}
 		return product;
 	});
@@ -136,17 +197,17 @@ const showHTML = () => {
 		containerProduct.classList.add('cart-product');
 
 		containerProduct.innerHTML = `
-            <div class="info-cart-product">
-                <span class="cantidad-producto-carrito">${product.quantity}</span>
-                <p class="titulo-producto-carrito">${product.title}</p>
-                <span class="precio-producto-carrito">${product.price}</span>
-            </div>
+			<div class="info-cart-product">
+				<span class="cantidad-producto-carrito">${product.quantity}</span>
+				<p class="titulo-producto-carrito">${product.title}</p>
+				<span class="precio-producto-carrito">${product.price}</span>
+			</div>
 			<div class="quantity-controls"></div>
 				<button class="btn-decrease" onclick="decreaseQuantity(${product.id})">-</button>
 				<span class="product-quantity">${product.quantity}</span>
 				<button class="btn-increase" onclick="increaseQuantity(${product.id})">+</button>
 			</div>
-            <svg
+			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				fill="none"
 				viewBox="0 0 24 24"
@@ -161,7 +222,7 @@ const showHTML = () => {
 					d="M6 18L18 6M6 6l12 12"
 				/>
 			</svg>
-        `;
+		`;
 
 		rowProduct.append(containerProduct);
 
