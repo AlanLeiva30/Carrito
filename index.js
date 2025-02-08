@@ -86,6 +86,30 @@ btnEmptyCart.addEventListener('click', () => {
 	}
 });
 
+// Aumentar cantidad de productos
+function increaseQuantity(itemId) {
+	allProducts = allProducts.map(product => {
+		if (product.id === itemId) {
+			product.quantity++;
+		}
+		return product;
+	});
+
+	showHTML();
+}
+
+// Disminuir cantidad de productos
+function decreaseQuantity(itemId) {
+	allProducts = allProducts.map(product => {
+		if (product.id === itemId && product.quantity > 1) {
+			product.quantity--;
+		}
+		return product;
+	});
+
+	showHTML();
+}
+
 // Mostrar el carrito actualizado
 const showHTML = () => {
 	if (!allProducts.length) {
@@ -117,6 +141,11 @@ const showHTML = () => {
                 <p class="titulo-producto-carrito">${product.title}</p>
                 <span class="precio-producto-carrito">${product.price}</span>
             </div>
+			<div class="quantity-controls"></div>
+				<button class="btn-decrease" onclick="decreaseQuantity(${product.id})">-</button>
+				<span class="product-quantity">${product.quantity}</span>
+				<button class="btn-increase" onclick="increaseQuantity(${product.id})">+</button>
+			</div>
             <svg
 				xmlns="http://www.w3.org/2000/svg"
 				fill="none"
