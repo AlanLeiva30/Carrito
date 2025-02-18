@@ -1,10 +1,10 @@
 [
     {
         "name": "Zapatos Nike",
-        "price": 85,
+        "price": 80,
         "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8MHx8&auto=format&fit=crop&w=1170&q=80",
         "alt": "Zapatos Nike",
-        "quantity": 15
+        "quantity": 10
     },
     {
         "name": "Audífonos",
@@ -26,7 +26,7 @@
         "image": "https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8MHx8&auto=format&fit=crop&w=764&q=80",
         "alt": "Smartwatch",
         "quantity": 5
-    }
+    },
     {
         "name": "Zapatos deportivos mujer",
         "price": 70,
