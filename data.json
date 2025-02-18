@@ -27,4 +27,25 @@
         "alt": "Smartwatch",
         "quantity": 5
     }
+    {
+        "name": "Zapatos deportivos mujer",
+        "price": 70,
+        "image": "https://images.unsplash.com/photo-1560769629-975ec94e6a86?q=80&w=1528&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "alt": "Zapatos deportivos mujer",
+        "quantity": 12
+    },
+    {
+        "name": "botella de agua deportiva",
+        "price": 60,
+        "image": "https://images.unsplash.com/photo-1544003484-3cd181d17917?q=80&w=1528&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D%22",
+        "alt": "botella de agua deportiva",
+        "quantity": 7
+    },
+    {
+        "name": "Gorra deportiva",
+        "price": 25,
+        "image": "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?q=80&w=1472&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "alt": "Gorra deportiva",
+        "quantity": 10
+    }
 ]
