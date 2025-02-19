@@ -18,5 +18,6 @@ Productos Disponibles:
 👟 Zapatos deportivos mujer – $70
 🚰 Botella de agua deportiva – $60
 🧢 Gorra deportiva – $25
+
 Con este proyecto, se busca ofrecer una experiencia de compra cómoda y segura, facilitando a los clientes la selección, modificación y confirmación de sus artículos preferidos. Además, la funcionalidad de descarga de factura en PDF brinda un respaldo claro e inmediato de la transacción realizada.🎉
 LINK de la tienda: https://alanleiva30.github.io/Carrito/
