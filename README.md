@@ -1,5 +1,7 @@
 # Carrito
 Este proyecto consiste en el desarrollo de un carrito de compras en línea que permite a los usuarios seleccionar productos de un listado y añadirlos fácilmente a su pedido. El objetivo principal es brindar una experiencia de compra clara y fluida, mostrando información en tiempo real sobre el total de la compra y la disponibilidad de los artículos.
+
+
 Características del Carrito:
 ✅ Interfaz intuitiva: Agrega productos con un solo clic y visualiza los detalles de tu compra en tiempo real.
 ✅ Cantidad disponible: Cada producto muestra la cantidad en stock, evitando inconvenientes al comprar.
